@@ -1,0 +1,15 @@
+.greetings-container {
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.greeting {
+  margin-bottom: 25px;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px; 
+}

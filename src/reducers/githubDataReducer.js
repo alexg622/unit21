@@ -1,7 +1,8 @@
-import {GET_USER_REPOS} from '../types/types'
+import {GET_USER_REPOS, SET_API_KEY} from '../types/types'
 
 const initialState = {
-  userData: []
+  userData: [],
+  apiKey: ""
 }
 
 export default function(state = initialState, action) {
@@ -10,6 +11,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         userData: action.payload
+      }
+    case SET_API_KEY:
+      return {
+        ...state,
+        apiKey: action.payload
       }
     default:
       return state
