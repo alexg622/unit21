@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
-import axios from "axios"
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store'
 import './App.css';
+import home from "./components/Index"
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      userAvatar: ""
-    }
-  }
-  componentDidMount() {
-    axios.get("https://api.github.com/user/repos?access_token=d136a3243c9199ccc5e63f81cfb5212944f9044c")
-    .then(res => this.setState({userAvatar: res.data[0].owner.avatar_url}))
-  }
-
   render() {
-    return (
-      <div className="App">
-        <img alt="" src={this.state.userAvatar}/>
-      </div>
-    );
-  }
+   return (
+     <Provider store={ store }>
+       <Router>
+         <div className="App">
+           <Route exact path="/" component={ home } />
+         </div>
+       </Router>
+     </Provider>
+   );
+ }
 }
+
 
 export default App;
