@@ -10,7 +10,6 @@ class Repo extends Component {
     super(props)
     this.state = {
       userName: "",
-      avatarUrl: "",
       repo: "",
       getNum: {
         "0": "01",
@@ -26,35 +25,13 @@ class Repo extends Component {
         "10": "11",
         "11": "12"
       },
-      getDay: {
-        "0": "Sun",
-        "1": "Mon",
-        "2": "Tue",
-        "3": "Wed",
-        "4": "Thu",
-        "5": "Fri",
-        "6": "Sat"
-      },
-      getMonth: {
-        "0": "Jan",
-        "1": "Feb",
-        "2": "Mar",
-        "3": "Apr",
-        "4": "May",
-        "5": "Jun",
-        "6": "Jul",
-        "7": "Aug",
-        "8": "Sep",
-        "9": "Oct",
-        "10": "Nov",
-        "11": "Dec"
-      },
       issues: []
     }
     this.handleIssues = this.handleIssues.bind(this)
   }
 
   componentDidMount() {
+    // persist the state of the session with localStorage
     if (localStorage.apiKey !== "undefined" && localStorage.apiKey !== "") {
       this.props.getUserRepos(localStorage.apiKey)
       .then(res => {
@@ -77,6 +54,7 @@ class Repo extends Component {
     this.checkBoxAssignee.style.background = "white"
   }
 
+  // puts issues into state once a repository is clicked on
   handleIssues(e) {
     let classArr = e.target.classList
     let repo = classArr[1]
@@ -86,13 +64,14 @@ class Repo extends Component {
     localStorage.setItem("userName", owner)
     this.props.getIssues(this.props.apiKey, owner, repo)
     .then(() => {
-      this.props.setIssuesBool(true)
-      localStorage.setItem("issuesBool", true)
+      this.props.setIssuesBool(true) // makes it so sessions and repos show not just repos
+      localStorage.setItem("issuesBool", true) // for persisting state after refreshing the browser
       this.setState({issues: this.props.issues})
       this.handleCheckBoxes()
     })
   }
 
+  // puts repos into the lower container
   showRepos(userData) {
     let result = []
     if(userData.length > 0) {
@@ -122,6 +101,7 @@ class Repo extends Component {
     return result
   }
 
+  // puts issues into the lower container
   showIssues(userData) {
     let result = []
     if(userData.length > 0) {
@@ -195,6 +175,7 @@ class Repo extends Component {
     return result
   }
 
+  // handles what is displayed when there are only repos
   showRepoDivs(userData) {
     return [
       <div key="repos" className="index-upper-container">Repositories</div>,
@@ -202,6 +183,7 @@ class Repo extends Component {
     ]
   }
 
+  // handles what is displayed when there are repos and issues
   showIssuesDivs(userData, issues) {
     return [
       <div key="repos" className="index-upper-issues-container">
@@ -253,7 +235,6 @@ class Repo extends Component {
     this.checkBoxCreated.style.background = "white"
     this.checkBoxUpdated.style.background = "white"
     this.checkBoxAssignee.style.background = "white"
-
   }
 
   sortCreatedAt(e) {
@@ -342,7 +323,6 @@ Repo.propTypes = {
 }
 
 const mapStateToProps = state => {
-  window.state = state
   let values = {
     errors: state.errors,
     userGitData: state.userGitData,
