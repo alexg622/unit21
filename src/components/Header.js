@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
-import { setApiKey, getUserRepos } from '../actions/githubActions'
+import { setApiKey, getUserRepos, setIssuesBool } from '../actions/githubActions'
 import '../styles/header.scss'
 
 class Header extends Component {
@@ -19,6 +19,7 @@ class Header extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
+    this.props.setIssuesBool(false)
     this.props.setApiKey(this.state.apiKey)
     this.props.getUserRepos(this.state.apiKey).then(() => this.setState({apiKey: ""}))
   }
@@ -40,7 +41,8 @@ class Header extends Component {
 
 Header.propTypes = {
   getUserRepos: PropTypes.func.isRequired,
-  setApiKey: PropTypes.func.isRequired
+  setApiKey: PropTypes.func.isRequired,
+  setIssuesBool: PropTypes.func.isRequired
 }
 
-export default connect(null, {setApiKey, getUserRepos})(Header)
+export default connect(null, {setApiKey, getUserRepos, setIssuesBool})(Header)

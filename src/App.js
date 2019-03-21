@@ -5,6 +5,7 @@ import store from './store'
 import './App.css';
 import Header from './components/Header'
 import Repo from "./components/Index"
+import Issue from "./components/Issue"
 
 class App extends Component {
   render() {
@@ -15,6 +16,7 @@ class App extends Component {
          <div className="App">
            <Route exact path="/" component={ Repo } />
            <Route exact path="/repos" component={ Repo } />
+           <Route exact path="/issues" component={ Issue } />
          </div>
        </Router>
      </Provider>

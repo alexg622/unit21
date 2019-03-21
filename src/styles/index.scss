@@ -16,7 +16,7 @@
 }
 
 .index-inner-container {
-  width: 60%;
+  width: 80%;
   border-left: 4px solid black;
   border-right: 4px solid black;
   height: 700px;
@@ -37,16 +37,42 @@
   flex-direction: column;
 }
 
+.assignee-container {
+  display:flex;
+  margin-bottom: 5px;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  margin-left: 15px;
+  flex-direction: column;
+  width: 100%;
+}
+
 .repo-div-inner-container {
   display: flex;
-  height: 60px;
+  height: 80px;
   justify-content: flex-start;
   align-items: center;
-  width: 250px;
+  width: 350px;
+  text-align: center;
+  margin-left: 15px;
+}
+
+.issue-div-inner-container {
+  display: flex;
+  height: 80px;
+  justify-content: flex-start;
+  align-items: center;
+  width: 125px;
+  text-align: center;
 }
 
 .repo-div-placeholder {
   width: 250px;
+}
+
+.issues-div-placeholder {
+  width: 125px;
 }
 
 .index-lower-container {
@@ -54,9 +80,36 @@
   overflow: scroll;
 }
 
+.issues-repos-container {
+  height: 100%;
+  display:flex
+}
+
+.index-repos-lower-container {
+  height: 88%;
+  overflow:scroll;
+  width: 50%;
+}
+
+.index-issues-lower-container {
+  height: 88.7%;
+  overflow:scroll;
+  width: 50%;
+  border-left: 4px solid black;
+}
+
 .repo-div-container {
   display:flex;
   justify-content: space-between;
+}
+.issue-div-container {
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align:center;
+  padding:5px;
 }
 
 .index-upper-container {
@@ -68,5 +121,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: bold;
+}
+
+.assignee-outer-container {
+  width: 100%;
+}
+
+.issue-container {
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 15px;
+}
+
+.issue-container div {
+  margin-bottom: 2px;
+  font-family: georgia;
+}
+
+.issue-info {
+  display:flex;
+}
+
+.bold {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.index-upper-issues-container {
+  width: 100%;
+  font-size: 25px;
+  font-family: georgia;
+  border-bottom: 4px solid black;
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   font-weight: bold;
 }
