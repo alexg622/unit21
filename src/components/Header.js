@@ -20,7 +20,7 @@ class Header extends Component {
   handleSubmit(e) {
     e.preventDefault()
     this.props.setApiKey(this.state.apiKey)
-    this.props.getUserRepos(this.state.apiKey)
+    this.props.getUserRepos(this.state.apiKey).then(() => this.setState({apiKey: ""}))
   }
 
   render() {

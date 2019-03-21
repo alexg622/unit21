@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from './store'
 import './App.css';
 import Header from './components/Header'
-import home from "./components/Index"
+import Repo from "./components/Index"
 
 class App extends Component {
   render() {
@@ -13,7 +13,8 @@ class App extends Component {
        <Header />
        <Router>
          <div className="App">
-           <Route exact path="/" component={ home } />
+           <Route exact path="/" component={ Repo } />
+           <Route exact path="/repos" component={ Repo } />
          </div>
        </Router>
      </Provider>

@@ -1,8 +1,9 @@
-import {GET_USER_REPOS, SET_API_KEY} from '../types/types'
+import {GET_USER_REPOS, SET_API_KEY, GET_ISSUES} from '../types/types'
 
 const initialState = {
   userData: [],
-  apiKey: ""
+  apiKey: "",
+  issues: []
 }
 
 export default function(state = initialState, action) {
@@ -16,6 +17,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         apiKey: action.payload
+      }
+    case GET_ISSUES:
+      return {
+        ...state,
+        issues: action.payload
       }
     default:
       return state
