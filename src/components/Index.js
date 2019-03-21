@@ -49,7 +49,8 @@ class Repo extends Component {
         "9": "Oct",
         "10": "Nov",
         "11": "Dec"
-      }
+      },
+      issues: []
     }
     this.handleIssues = this.handleIssues.bind(this)
   }
@@ -60,7 +61,10 @@ class Repo extends Component {
     let owner = classArr[2]
     this.setState({repo})
     this.props.getIssues(this.props.apiKey, owner, repo)
-    .then(() => this.props.setIssuesBool(true))
+    .then(() => {
+      this.props.setIssuesBool(true)
+      this.setState({issues: this.props.issues})
+    })
   }
 
   showRepos(userData) {
@@ -92,7 +96,7 @@ class Repo extends Component {
     return result
   }
 
-  showIssues(userData, manageWidth, issueDivWidth) {
+  showIssues(userData) {
     let result = []
     if(userData.length > 0) {
       for(let i=0; i<userData.length; i++) {
@@ -107,14 +111,12 @@ class Repo extends Component {
         }
         let updatedAt = new Date(userData[i].updated_at)
         let updatedText = ""
-        window.updatedAt = updatedAt
-        window.createdAt = createdAt
         if(updatedAt.getMonth() === createdAt.getMonth() && updatedAt.getYear() === createdAt.getYear() && updatedAt.getDate() === createdAt.getDate()) {
           let hours = updatedAt.getHours() - createdAt.getHours()
           if(hours === 1) {
-            updatedText = String(hours) + " hour ago"
+            updatedText = String(hours) + " hour ago from creation"
           } else {
-            updatedText = String(hours) + " hours ago"
+            updatedText = String(hours) + " hours ago from creation"
           }
         } else {
           let days = (updatedAt.getTime() - createdAt.getTime())
@@ -126,18 +128,21 @@ class Repo extends Component {
           if(createdAt.getTime() === updatedAt.getTime()) {
             updatedText = "Never updated"
           } else if (days === 0) {
-            updatedText = "1 day ago"
+            updatedText = "1 day ago from creation"
           } else {
-            updatedText = String(days) + " days ago"
+            updatedText = String(days) + " days ago from creation"
           }
         }
-        let updatedDay = this.state.getDay[updatedAt.getDay()]
-        let updatedYear = updatedAt.getFullYear()
-        let updatedDate = updatedAt.getDate()
-        let updatedMonth = this.state.getMonth[updatedAt.getMonth()]
         let title = userData[i].title
-        let ownerAvatar = userData[i].assignee.avatar_url
-        let assigneeName = userData[i].assignee.login
+        let ownerAvatar = ""
+        let assigneeName = ""
+        if(userData[i].assignee === null) {
+          ownerAvatar = "https://cdn2.iconfinder.com/data/icons/website-icons/512/User_Avatar-512.png"
+          assigneeName = "No Assignee"
+        } else {
+          ownerAvatar = userData[i].assignee.avatar_url
+          assigneeName = userData[i].assignee.login
+        }
         let backgroundStyle = "white"
         if(i % 2 === 0) {
           backgroundStyle = "lightgray"
@@ -174,23 +179,121 @@ class Repo extends Component {
   showIssuesDivs(userData, issues) {
     return [
       <div key="repos" className="index-upper-issues-container">
-        <div>Repositories</div>
-        <div>Issues for {this.state.repo}</div>
+        <div className="center-width">Repositories</div>
+        <div className="checkbox-outer-container">
+          <div className="checkbox-container">
+            <div ref = {checkBoxCreated => this.checkBoxCreated = checkBoxCreated} onClick={this.sortCreatedAt.bind(this)} className="checkbox checked"></div>
+            <div className="category">Created</div>
+          </div>
+          <div className="checkbox-container">
+            <div ref = {checkBoxUpdated => this.checkBoxUpdated = checkBoxUpdated} onClick={this.sortUpdatedAt.bind(this)} className="checkbox"></div>
+            <div className="category">Updated</div>
+          </div>
+          <div className="checkbox-container">
+            <div ref = {checkBoxTitle => this.checkBoxTitle = checkBoxTitle} onClick={this.sortTitle.bind(this)} className="checkbox"></div>
+            <div className="category">Title</div>
+          </div>
+          <div className="checkbox-container">
+            <div ref = {checkBoxAssignee => this.checkBoxAssignee = checkBoxAssignee} onClick={this.sortAssignee.bind(this)} className="checkbox"></div>
+            <div className="category">Assignee</div>
+          </div>
+        </div>
+        <div className="center-width">Issues for {this.state.repo}</div>
       </div>,
       <div key="issues" className="issues-repos-container">
         <div className="index-repos-lower-container">
           {this.showRepos(userData)}
         </div>
         <div className="index-issues-lower-container">
-          {this.showIssues(issues, "issues-div-placeholder", "issue-div-inner-container")}
+          {this.showIssues(issues)}
         </div>
       </div>
     ]
   }
 
+  sortUpdatedAt(e) {
+    let issues = this.mergeSort(this.props.issues, (a, b) => new Date(a.updated_at) > new Date(b.updated_at))
+    this.setState({issues})
+    this.checkBoxTitle.style.background = "white"
+    this.checkBoxCreated.style.background = "white"
+    this.checkBoxUpdated.style.background = "black"
+    this.checkBoxAssignee.style.background = "white"
+  }
+
+  sortTitle(e) {
+    let issues = this.mergeSort(this.props.issues, (a, b) => a.title < b.title)
+    this.setState({issues})
+    this.checkBoxTitle.style.background = "black"
+    this.checkBoxCreated.style.background = "white"
+    this.checkBoxUpdated.style.background = "white"
+    this.checkBoxAssignee.style.background = "white"
+
+  }
+
+  sortCreatedAt(e) {
+    let issues = this.props.issues
+    this.setState({issues})
+    this.checkBoxTitle.style.background = "white"
+    this.checkBoxCreated.style.background = "black"
+    this.checkBoxUpdated.style.background = "white"
+    this.checkBoxAssignee.style.background = "white"
+  }
+
+  sortAssignee(e) {
+    let issues = this.mergeSort(this.props.issues, (a, b) => {
+      let assigneeA = ""
+      let assigneeB = ""
+      if (a.assignee === null) {
+        assigneeA = "no assignee"
+      } else {
+        assigneeA = a.assignee.login
+      }
+      if (b.assignee === null) {
+        assigneeB = "no assignee"
+      } else {
+        assigneeB = b.assignee.login
+      }
+      return assigneeA < assigneeB
+    })
+    this.setState({issues})
+    this.checkBoxTitle.style.background = "white"
+    this.checkBoxCreated.style.background = "white"
+    this.checkBoxUpdated.style.background = "white"
+    this.checkBoxAssignee.style.background = "black"
+  }
+
+  mergeSort (arr, callback) {
+    function merge (left, right, callback) {
+      let result = []
+      let indexLeft = 0
+      let indexRight = 0
+      while (indexLeft < left.length && indexRight < right.length) {
+        if (callback(left[indexLeft], right[indexRight])) {
+          result.push(left[indexLeft])
+          indexLeft++
+        } else {
+          result.push(right[indexRight])
+          indexRight++
+        }
+      }
+      return result.concat(left.slice(indexLeft)).concat(right.slice(indexRight))
+    }
+    if (arr.length <= 1) {
+      return arr
+    }
+    const middle = Math.floor(arr.length / 2)
+    const left = arr.slice(0, middle)
+    const right = arr.slice(middle)
+    return merge(
+      this.mergeSort(left, callback),
+      this.mergeSort(right, callback),
+      callback
+    )
+  }
+
   render(){
     let { userData } = this.props.userGitData
-    let { issues } = this.props
+    let { issues } = this.state
     return(
       <div className="index-container">
         <div className="index-inner-container">

@@ -98,6 +98,41 @@
   border-left: 4px solid black;
 }
 
+.checkbox-outer-container {
+  display:flex;
+}
+
+.center-width {
+  width: 300px;
+  text-align: center;
+}
+
+.checkbox {
+  width: 12px;
+  height: 12px;
+  border: 2px solid black;
+  margin-right: 5px;
+  border-radius: 25px
+}
+
+.category {
+  font-size: 12px;
+}
+
+.checkbox-container {
+  display:flex;
+  margin-left: 15px;
+  text-align: center;
+}
+
+.checkbox:hover {
+  cursor: pointer;
+}
+
+.checked {
+  background: black;
+}
+
 .repo-div-container {
   display:flex;
   justify-content: space-between;
