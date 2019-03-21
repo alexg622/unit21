@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component matches the snapshot component 1`] = `
+Array [
+  <div
+    className="header-container"
+  >
+    <div
+      className="left-space-holder"
+    />
+    <div
+      className="header-title"
+    >
+      Github Manager
+    </div>
+    <form
+      className="api-key-form"
+      onSubmit={[Function]}
+    >
+      <input
+        className="api-key-input"
+        onChange={[Function]}
+        placeholder="Github api key"
+        type="text"
+        value=""
+      />
+      <input
+        className="api-key-submit"
+        type="submit"
+        value="Set Key"
+      />
+    </form>
+  </div>,
+  <div
+    className="App"
+  >
+    <div
+      className="index-container"
+    >
+      <div
+        className="index-inner-container"
+      >
+        <div
+          className="index-upper-container"
+        >
+          Repositories
+        </div>
+        <div
+          className="index-lower-container"
+        >
+          <div
+            className="instructions"
+          >
+            Enter your github auth token to view your repositories
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+]
+`;

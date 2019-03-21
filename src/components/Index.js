@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getUserRepos, getIssues, setIssuesBool } from '../actions/githubActions'
 import RepoCard from './RepoCard'
@@ -56,7 +55,7 @@ class Repo extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.apiKey !== "undefined") {
+    if (localStorage.apiKey !== "undefined" && localStorage.apiKey !== "") {
       this.props.getUserRepos(localStorage.apiKey)
       .then(res => {
         if(localStorage.repo !== "undefined" && localStorage.repo !== "") {
