@@ -21,6 +21,10 @@ class Header extends Component {
     e.preventDefault()
     this.props.setIssuesBool(false)
     this.props.setApiKey(this.state.apiKey)
+    localStorage.setItem("apiKey", this.state.apiKey)
+    localStorage.setItem("repo", undefined)
+    localStorage.setItem("userName", undefined)
+    localStorage.setItem("issuesBool", false)
     this.props.getUserRepos(this.state.apiKey).then(() => this.setState({apiKey: ""}))
   }
 

@@ -55,15 +55,42 @@ class Repo extends Component {
     this.handleIssues = this.handleIssues.bind(this)
   }
 
+  componentDidMount() {
+    if (localStorage.apiKey !== "undefined") {
+      this.props.getUserRepos(localStorage.apiKey)
+      .then(res => {
+        if(localStorage.repo !== "undefined" && localStorage.repo !== "") {
+          this.props.setIssuesBool(Boolean(localStorage.getItem("issuesBool")))
+          this.props.getIssues(localStorage.apiKey, localStorage.userName, localStorage.repo)
+          .then(res => {
+            this.setState({issues: this.props.issues})
+            this.setState({repo: localStorage.repo})
+          })
+        }
+      })
+    }
+  }
+
+  handleCheckBoxes() {
+    this.checkBoxTitle.style.background = "white"
+    this.checkBoxCreated.style.background = "black"
+    this.checkBoxUpdated.style.background = "white"
+    this.checkBoxAssignee.style.background = "white"
+  }
+
   handleIssues(e) {
     let classArr = e.target.classList
     let repo = classArr[1]
     let owner = classArr[2]
     this.setState({repo})
+    localStorage.setItem("repo", repo)
+    localStorage.setItem("userName", owner)
     this.props.getIssues(this.props.apiKey, owner, repo)
     .then(() => {
       this.props.setIssuesBool(true)
+      localStorage.setItem("issuesBool", true)
       this.setState({issues: this.props.issues})
+      this.handleCheckBoxes()
     })
   }
 
@@ -85,7 +112,7 @@ class Repo extends Component {
             repoName={repoName}
             ownerName={ownerName}
             backgroundStyle={backgroundStyle}
-            handleIssues={this.handleIssues.bind(this)}
+            handleIssues={this.handleIssues}
             ownerAvatar={ownerAvatar}
           />
         )
